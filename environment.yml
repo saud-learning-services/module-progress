@@ -1,0 +1,14 @@
+name: module_progress_env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python-dotenv
+  - prettytable
+  - pandas
+  - python
+  - tqdm
+  - pip
+  - pip:
+      - canvasapi
+      - pick

@@ -1,0 +1,15 @@
+archive/*
+!archive/.gitkeep
+
+data/*
+!data/.gitkeep
+
+status_log/*
+!status_log/.gitkeep
+
+legacy
+local
+
+module_progress.code-workspace
+
+.vscode
