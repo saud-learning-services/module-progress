@@ -13,3 +13,5 @@ local
 module_progress.code-workspace
 
 .vscode
+
+.env
