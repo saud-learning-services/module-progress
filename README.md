@@ -12,7 +12,7 @@ Module Progress is a Python script and Tableau workbook for visualizing students
   CANVAS_API_TOKEN_SANDBOX =
   ```
 
-  > asign your Canvas token to the CANVAS_API_TOKEN variable (or one of the following variables if using test or sandbox instances of Canvas)
+  > assign your Canvas token to the CANVAS_API_TOKEN variable (or one of the following variables if using test or sandbox instances of Canvas)
 
 - paste all the course ids you wish to be included in the data output under the `course_id` column in **courses.csv**
 
