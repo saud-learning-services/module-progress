@@ -80,7 +80,6 @@ def get_items(modules_df, cname):
             "items_completion_requirement",
             "items_completion_req_")
     except KeyError:
-        print('#3')
         raise KeyError(
             'Unable to expand module items for "' + cname + '." Please ensure all modules have items')
     else:
