@@ -184,9 +184,6 @@ def write_data_directory(dataframes, cid):
         dir_name (string): directory name
     """
 
-    # clear any folders that are currently in there (leave tableau folder)
-    _clear_data_directory()
-
     course_path = _make_output_dir(cid)
     for name, dataframe in dataframes.items():
         dataframe.to_csv('{}/{}.csv'.format(course_path, name))
@@ -195,7 +192,7 @@ def write_data_directory(dataframes, cid):
     #     '{}/{}.csv'.format(tableau_path, cid))
 
 
-def _clear_data_directory():
+def clear_data_directory():
     """
     Clears entire data directory except for Tableau folder
     Directory path : module_progress/data
