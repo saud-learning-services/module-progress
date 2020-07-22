@@ -18,6 +18,7 @@ from canvas_helpers import (get_modules,
                             get_student_module_status,
                             get_student_items_status,
                             write_data_directory,
+                            clear_data_directory,
                             write_tableau_directory,
                             log_success,
                             log_failure)
@@ -37,6 +38,9 @@ def main():
     canvas = usr_settings['canvas']
     tableau_dfs = []
 
+    # clear any folders that are currently in there (leave tableau folder)
+    clear_data_directory()
+
     # Getting course information for user-specified courses
     # Loops through courses and tries to get module/item information and create Pandas Dataframes
     # Writes dataframes to disk if successful
@@ -44,6 +48,7 @@ def main():
     for cid in course_ids:
         course = canvas.get_course(cid)
         # Calling helpers to get data from Canvas and build Pandas DataFrame's
+
         try:
             settings.status[str(cid)]['cname'] = course.name
             modules_df = get_modules(course)
@@ -52,6 +57,7 @@ def main():
             student_items_status = get_student_items_status(
                 course, student_module_status)
         except KeyError as e:
+            print(e)
             log_failure(cid, e)
         except Unauthorized:
             log_failure(
