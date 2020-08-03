@@ -1,7 +1,7 @@
 """
 # -*- coding: utf-8 -*-
-Created on Tue Aug 21 14:18:10 2018
-Refactored May 2019
+CREATED: Tue Aug 21 2018
+MODIFIED: Sun Aug 02 2020
 
 All Canvas LMS - REST API calls made using canvasapi python API wrapper:
 https://github.com/ucfopen/canvasapi
