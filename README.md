@@ -4,7 +4,7 @@ Module Progress is a Python script and Tableau workbook for visualizing students
 
 ## Setup
 
-- Create a file title `.env` in the src folder with the following fields:
+- Create a file called `.env` in the ROOT folder with the following fields:
 
   ```
   CANVAS_API_TOKEN =
@@ -26,7 +26,7 @@ Module Progress is a Python script and Tableau workbook for visualizing students
 
 - Open terminal/command line and navigate to project ROOT directory
 - Start the Conda environment: `conda activate module_progress_env`
-- Run the script: `python src/get_module_progress.py`
+- Run the script: `python get_module_progress.py`
 - Wait for script to finish and print table to console. Evaluate the results and ensure necessary courses have completed successfully. If a course fails, error messages will provide info about what went wrong.
 - All courses that completed successfully will have a directory titled by course id in the /data folder with 4 CSV files inside
 - The directory: `data/Tableau` will contain all the necessary files for linking to Tableau including:
