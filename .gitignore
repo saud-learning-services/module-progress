@@ -10,9 +10,9 @@ status_log/*
 legacy
 local
 
-module_progress.code-workspace
-
 .vscode
+
+courses.csv
 
 .env
 

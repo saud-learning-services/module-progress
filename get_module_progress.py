@@ -1,38 +1,39 @@
 """
 # -*- coding: utf-8 -*-
-Created on Tue Aug 21 14:18:10 2018
-Refactored May 2019
+CREATED: Tue Aug 21 2018
+MODIFIED: Sun Aug 02 2020
 
 All Canvas LMS - REST API calls made using canvasapi python API wrapper:
 https://github.com/ucfopen/canvasapi
 
-@authors: markoprodanovic, alisonmyers
+@authors: Marko Prodanovic, Alison Myers, Jeremy Hidjaja
+
 """
+
 import sys
 from canvasapi.exceptions import Unauthorized
 import pandas as pd
-import interface
-import settings
-from canvas_helpers import (get_modules,
-                            get_items,
-                            get_student_module_status,
-                            get_student_items_status,
-                            write_data_directory,
-                            clear_data_directory,
-                            write_tableau_directory,
-                            log_success,
-                            log_failure)
+import src.interface as interface
+import src.settings as settings
+from src.canvas_helpers import (get_modules,
+                                get_items,
+                                get_student_module_status,
+                                get_student_items_status,
+                                write_data_directory,
+                                clear_data_directory,
+                                write_tableau_directory,
+                                log_success,
+                                log_failure)
 
 pd.set_option('display.max_columns', 500)
 
 
 def main():
     """
-    Main entry point for module_proygress python script
+    Main entry point for Module Progress Script
     """
 
     # Initialization
-    settings.init()
     usr_settings = interface.get_user_settings()
     course_ids = usr_settings['course_ids']
     canvas = usr_settings['canvas']

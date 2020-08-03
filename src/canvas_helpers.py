@@ -6,16 +6,16 @@ All Canvas LMS REST API calls made using canvasapi python API wrapper:
 https://github.com/ucfopen/canvasapi
 ***
 
-@authors: markoprodanovic, alisonmyers
+@authors: Marko Prodanovic, Alison Myers, Jeremy Hidjaja 
 """
 from ast import literal_eval
 import datetime
 import re
 import os
+import shutil
 from tqdm import tqdm
 import pandas as pd
-import settings
-import shutil
+from . import settings
 
 
 def get_modules(course):

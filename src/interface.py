@@ -2,7 +2,7 @@
 Interface module for get_module_progress.py. Handles all actions
 relating to user input, feedback from the console and token controls.
 
-@authors: markoprodanovic, alisonmyers
+@authors: Marko Prodanovic, Alison Myers
 """
 import os
 import sys
@@ -14,8 +14,8 @@ from canvasapi.exceptions import InvalidAccessToken, ResourceDoesNotExist, Unaut
 from pick import pick
 from prettytable import PrettyTable
 
-import settings
-from canvas_helpers import log_failure
+from . import settings
+from .canvas_helpers import log_failure
 
 CANVAS_INSTANCES = ['https://canvas.ubc.ca',
                     'https://ubc.test.instructure.com',
