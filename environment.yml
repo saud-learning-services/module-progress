@@ -6,7 +6,7 @@ dependencies:
   - python-dotenv
   - prettytable
   - pandas
-  - python=
+  - python
   - tqdm
   - pip
   - pip:
