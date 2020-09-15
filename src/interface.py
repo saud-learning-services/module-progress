@@ -37,8 +37,8 @@ def get_user_settings():
     Exceptions Caught:
         InvalidAccessToken: if value for token is not set in .env file or if token value is not valid
         RuntimeError: if there is no correctly formatted (w. necesary fields) .env file is in root directory
-        ResourceDoesNotExist: if a course id from the course_id column in the courses.csv file cannot be found
-        TypeError: if a value that isn't an integer appears under the course_id column is courses.csv
+        ResourceDoesNotExist: if a course id from the course_id column in the course_entitlements.csv file cannot be found
+        TypeError: if a value that isn't an integer appears under the course_id column is course_entitlements.csv
         Unauthorized: if a user does not have permission to access data for a specified course
 
     """
@@ -159,14 +159,14 @@ def __load_ids():
 
     Exceptions Caught:
         FileNotFoundError: if there is no courses.csv file in src directory (SHUTS DOWN)
-        KeyError: if there is no column titled "course id" in courses.csv (SHUTS DOWN)
+        KeyError: if there is no column titled "course id" in course_entitlements.csv (SHUTS DOWN)
 
     """
 
     cids = []
 
     try:
-        dataframe = pd.read_csv(f'{settings.ROOT_DIR}/courses.csv')
+        dataframe = pd.read_csv(f'{settings.ROOT_DIR}/course_entitlements.csv')
         for index, row in dataframe.iterrows():
             course_id = row['course_id']
 
@@ -175,10 +175,10 @@ def __load_ids():
         return cids
     except FileNotFoundError:
         __shut_down(
-            'File Not Found: There must be a file named courses.csv in ROOT directory.')
+            'File Not Found: There must be a file named course_entitlements.csv in ROOT directory.')
     except KeyError:
         __shut_down(
-            'Key Error: Please ensure there is a column titled "course_id" present in courses.csv')
+            'Key Error: Please ensure there is a column titled "course_id" present in course_entitlements.csv')
 
 
 def __make_selected_courses_string(courses):
