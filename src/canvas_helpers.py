@@ -15,7 +15,7 @@ import os
 import shutil
 from tqdm import tqdm
 import pandas as pd
-from . import settings
+import settings
 
 
 def get_modules(course):
@@ -245,7 +245,7 @@ def _output_status_table(tableau_path):
     dataframe = pd.DataFrame(data, columns=cols)
 
     file_name = str(current_dt.strftime("%Y-%m-%d %H:%M:%S")) + '.csv'
-    dataframe.to_csv(settings.ROOT_DIR + '/../status_log/' + file_name)
+    dataframe.to_csv(f'{settings.ROOT_DIR}/status_log/{file_name}')
     dataframe.to_csv(tableau_path + '/status.csv')
 
 

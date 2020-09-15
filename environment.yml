@@ -1,4 +1,4 @@
-name: module_progress_env
+name: module-progress
 channels:
   - conda-forge
   - defaults

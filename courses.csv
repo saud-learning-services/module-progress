@@ -1,2 +1,5 @@
-course_id
-00000 <= add course ids under column (and delete this line)
+course_id, user_id
+65678, al2myers
+46832, al2myers
+65678, mprodan
+27558, mprodan
