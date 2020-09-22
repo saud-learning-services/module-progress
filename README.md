@@ -4,17 +4,13 @@ Module Progress is a Python script and Tableau workbook for visualizing students
 
 > Demo Dashboard [link](https://public.tableau.com/profile/marko1654#!/vizhome/ModuleProgress/StartHereOverallStatus)
 
-## Setup
+## Environment Setup
 
 - Create a file called `.env` in the ROOT folder with the following fields:
 
   ```
-  CANVAS_API_TOKEN =
+  CANVAS_API_TOKEN =  # paste your personal token here
   ```
-
-  > assign your Canvas token to the CANVAS_API_TOKEN variable
-
-- paste all the course ids you wish to be included in the data output under the `course_id` column in **course_entitlements.csv**
 
 - install environment using [Conda](https://docs.conda.io/en/latest/)
 
@@ -24,9 +20,11 @@ Module Progress is a Python script and Tableau workbook for visualizing students
 
 ## Specifying Courses and User Filters
 
-The script will need to know which courses to query. In a the file title `course_entitlements.csv`, ensure there is a `course_id` column and list all target course id's in that column _(Note you'll need to have the proper Canvas privledges to get the data)_.
+The script will need to know which courses to query. In the file titled `course_entitlements.csv`, ensure there is a `course_id` column and list all target course id's in that column _(Note you'll need to have the proper Canvas privledges to get the data)_.
 
 You can add a optional `user_id` column as well if working with Tableau Server. Here, you can list Tableau Server user id's to make certain course data be visible to certain users.
+
+*If you are not planning to use user filtering, you may delete the entire user_id column*
 
 For example:
 
@@ -37,16 +35,16 @@ For example:
 | 54321         | bar           |
 | 67890         | bar           |
 
-> In the above example user **foo** will be able to see course 12345 and user **bar** will be able to see course 67890. Both will be able to see course 54321
+> In the above example user **foo** will be able to see course 12345 and user **bar** will be able to see course 67890. Both will be able to see course 54321. Note that the same course id listed multiple times will not duplicate data.
 
 Read more about Tableau user filters [here](https://help.tableau.com/current/pro/desktop/en-us/publish_userfilters_create.htm)
 
 ## Running the Script
 
-- Open terminal/command line and navigate to project ROOT directory
+- Open terminal and navigate to project ROOT directory
 - Start the Conda environment: `conda activate module-progress`
 - Run the script: `python main.py`
-- Wait for script to finish and print table to console. Evaluate the results and ensure necessary courses have completed successfully. If a course fails, error messages will provide info about what went wrong.
+- Wait for script to finish and print table to console. Evaluate the printed output and ensure necessary courses have completed successfully. If a course fails, error messages will provide info about what went wrong.
 - All courses that completed successfully will have a directory titled by course id in the /data folder with 4 CSV files inside
 - The directory: `data/Tableau` will contain all the necessary files for linking to Tableau including:
   - module_data.csv: A table containing a union of data for all successfully queried courses
@@ -54,22 +52,27 @@ Read more about Tableau user filters [here](https://help.tableau.com/current/pro
 
 ## Connecting to Tableau
 
-- Open **module_progress.twbx** and navigate to _Data Source_ tab
+When you first open **module-progress.twb** you should use the sample data provided in the `/SAMPLE_Tableau_Data` directory. Follow the instructions under the **Without User Filters** section to import the data. Ensure that all the dashboards show sample data before applying custom data. We recommend getting familiar with the different views with the smaller sample dataset before jumping into larger dataset.
+
+
+To work with non-sample data (output from script), open **module-progress.twb** and navigate to _Data Source_ tab
 
 ### With User Filters
 
-@alisonmyers
-**TODO: Tableau changed the way joins work so I'm no-longer able to do series of left joins like before 😰. I don't get filtering with "relationships". Any tips??**
-
-Create a connection with one of the CSV files in the `data/Tableau` directory. Perform a series of left joins over the data the reflects the structure below:
-![join diagram](./_assets/joins.png)
+- Create a connection with one of the CSV files in the `data/Tableau` directory. 
+- Create a connection with `course_entitlements.csv`
+- Define relationship between tables on *Course ID* as such:
+  ![user filter diagram](./_assets/user-filter-joins.png)
+- Sign in to Tableau Server to enable filtering to your specifications in `course_entitlements.csv`
+- Go to any sheet within the dashboards and apply the calculated field "User Filter" in "Filters" (select only those that are "True") - apply this filter to all sheets using the dataset when prompted
+  > Note this calculated field matches your Tableau username to the "User Id's" specified in `course_entitlements.csv` and will filter out any courses that aren't associated with that username.
 
 
 ## Without User Filters
 
-Connect the `module_data.csv` and `status.csv` data sources to Tableau and define their relationship as such:
+- Connect the `module_data.csv` and `status.csv` data sources to Tableau and define their relationship as such:
   ![relationship diagram](./_assets/relationship-diagram.png)
-  ![edit relationship](./_assets/edit-relationship.png)
+- The two tables should be linked via *Course ID*
 
 When the data sources has been connected. The _Overall Status_ dashboard provides a dropdown where courses can be selected for the visualization by Course Name (only one course can be selected at a time)
 
