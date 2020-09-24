@@ -12,8 +12,6 @@ local
 
 .vscode
 
-courses.csv
-
 .env
 
 TODO.md

@@ -1,0 +1,3 @@
+The following directory contains sample data and reflects
+the state of the `/data/Tableau` directory after a 
+successful run.
