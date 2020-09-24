@@ -43,7 +43,7 @@ Read more about Tableau user filters [here](https://help.tableau.com/current/pro
 
 - Open terminal and navigate to project ROOT directory
 - Start the Conda environment: `conda activate module-progress`
-- Run the script: `python main.py`
+- Run the script: `python update_module_progress.py`
 - Wait for script to finish and print table to console. Evaluate the printed output and ensure necessary courses have completed successfully. If a course fails, error messages will provide info about what went wrong.
 - All courses that completed successfully will have a directory titled by course id in the /data folder with 4 CSV files inside
 - The directory: `data/Tableau` will contain all the necessary files for linking to Tableau including:
