@@ -14,7 +14,7 @@ import sys
 from canvasapi.exceptions import Unauthorized
 import pandas as pd
 import src.interface as interface
-import src.settings as settings
+import settings
 from src.canvas_helpers import (get_modules,
                                 get_items,
                                 get_student_module_status,

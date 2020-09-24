@@ -15,7 +15,7 @@ import os
 import shutil
 from tqdm import tqdm
 import pandas as pd
-from . import settings
+import settings
 
 
 def get_modules(course):
@@ -160,6 +160,13 @@ def get_student_items_status(course, module_status):
         "item_cp_req_").reset_index(drop=True)
     student_items_status['course_id'] = course.id
     student_items_status['course_name'] = course.name
+
+    # pull out completed_at column as list
+    items_status_list = student_items_status['completed_at'].values.tolist()
+    # clean/format the datetime string (to be more interpretable in Tableau)
+    cleaned = map(__clean_datetime_value, items_status_list)
+    # put cleaned values back into dataframe
+    student_items_status['completed_at'] = list(cleaned)
     student_items_status = student_items_status[['completed_at', 'course_id', 'module_id', 'items_count',
                                                  'module_name', 'module_position', 'state', 'unlock_at',
                                                  'student_id', 'student_name', 'items_id', 'items_title',
@@ -167,6 +174,18 @@ def get_student_items_status(course, module_status):
                                                  'item_cp_req_type', 'item_cp_req_completed', 'course_name']]
     return student_items_status
 
+def __clean_datetime_value(datetime_string):
+    """Given
+    """
+    if datetime_string is None:
+        return datetime_string
+
+    if isinstance(datetime_string, str):
+        x = datetime_string.replace('T', ' ')
+        return x.replace('Z', '')
+    
+    raise TypeError('Expected datetime_string to be of type string (or None)')
+    
 
 def write_data_directory(dataframes, cid):
     """Writes dataframes to directory titled by value of cid and items dataframe to
@@ -245,7 +264,7 @@ def _output_status_table(tableau_path):
     dataframe = pd.DataFrame(data, columns=cols)
 
     file_name = str(current_dt.strftime("%Y-%m-%d %H:%M:%S")) + '.csv'
-    dataframe.to_csv(settings.ROOT_DIR + '/../status_log/' + file_name)
+    dataframe.to_csv(f'{settings.ROOT_DIR}/status_log/{file_name}')
     dataframe.to_csv(tableau_path + '/status.csv')
 
 
