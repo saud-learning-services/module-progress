@@ -87,7 +87,7 @@ def main():
         sys.exit()
 
     interface.render_status_table()
-    print('\n\033[94m' + '***SCRIPT DONE***' + '\033[91m')
+    print('\n\033[94m' + '***COMPLETED***' + '\033[91m')
 
 
 if __name__ == "__main__":

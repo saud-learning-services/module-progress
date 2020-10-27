@@ -174,6 +174,7 @@ def get_student_items_status(course, module_status):
                                                  'item_cp_req_type', 'item_cp_req_completed', 'course_name']]
     return student_items_status
 
+
 def __clean_datetime_value(datetime_string):
     """Given
     """
@@ -183,9 +184,9 @@ def __clean_datetime_value(datetime_string):
     if isinstance(datetime_string, str):
         x = datetime_string.replace('T', ' ')
         return x.replace('Z', '')
-    
+
     raise TypeError('Expected datetime_string to be of type string (or None)')
-    
+
 
 def write_data_directory(dataframes, cid):
     """Writes dataframes to directory titled by value of cid and items dataframe to
@@ -228,9 +229,9 @@ def clear_data_directory():
 
 def write_tableau_directory(list_of_dfs):
     """Creates a directory titled Tableau containing 3 items:
-            entitlements.csv --> permissions table for Tableau server
-            module_data.csv  --> unioned data for Tableau
-            status.csv       --> details the success of the most recent run
+            course_entitlements.csv --> permissions table for Tableau server
+            module_data.csv         --> unioned data for Tableau
+            status.csv              --> details the success of the most recent run
 
     Also creates a .zip with the contents of the Tableau folder in the 'archive' directory
     """
@@ -240,6 +241,12 @@ def write_tableau_directory(list_of_dfs):
         '{}/{}.csv'.format(tableau_path, 'module_data'))
 
     root = os.path.dirname(os.path.abspath(__file__))[:-4]
+
+    # Copy the course_entitlements.csv into the Tableau folder
+    src = root + '/course_entitlements.csv'
+    dst = root + '/data/Tableau/course_entitlements.csv'
+    shutil.copyfile(src, dst)
+
     current_dt = datetime.datetime.now()
     dir_name = str(current_dt.strftime("%Y-%m-%d %H:%M:%S"))
     src = tableau_path
