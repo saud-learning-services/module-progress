@@ -9,6 +9,7 @@ status_log/*
 
 legacy
 local
+ignore
 
 .vscode
 
@@ -17,3 +18,5 @@ local
 TODO.md
 
 __pycache__
+
+UPDATED_ON.txt
