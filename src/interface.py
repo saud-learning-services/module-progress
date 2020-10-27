@@ -43,14 +43,6 @@ def get_user_settings():
 
     """
     print('\n')
-    # admin = bool(len(sys.argv) > 1 and sys.argv[1] == 'admin')
-
-    # if not admin:
-    #     # User required to input the canvas instance, token, and course_id
-    #     base_url = pick(CANVAS_INSTANCES,
-    #                     "Select the canvas instance to use.")[0]
-    # else:
-    # will default to canvas.ubc.ca
     base_url = 'https://canvas.ubc.ca'
 
     token = __load_token(base_url)
