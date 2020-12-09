@@ -95,3 +95,8 @@ When the data sources has been connected. The _Overall Status_ dashboard provide
 `course_entitlements.csv`: Where courses are specified (by Canvas course id). Must list course ids under a column titled "course_id". Optional "user_id" column if using Tableau Server & User Filters.
 
 `environment.yml`: Conda environment file.
+
+## Authors and Contributers
+[Marko Prodanovic](https://github.com/markoprodanovic)
+[Jeremy H](https://github.com/JeremyH011)
+
