@@ -97,6 +97,6 @@ When the data sources has been connected. The _Overall Status_ dashboard provide
 `environment.yml`: Conda environment file.
 
 ## Authors and Contributers
-[Marko Prodanovic](https://github.com/markoprodanovic)
-[Jeremy H](https://github.com/JeremyH011)
+- [Marko Prodanovic](https://github.com/markoprodanovic)
+- [Jeremy H](https://github.com/JeremyH011)
 
