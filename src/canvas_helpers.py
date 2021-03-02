@@ -164,7 +164,30 @@ def get_student_module_status(course):
             student_data = course.get_modules(
                 student_id=sid, include=["items"], per_page=50
             )
-            student_rows = _make_dataframe(student_data)
+            attrs = [
+                "id",
+                "name",
+                "position",
+                "unlock_at",
+                "require_sequential_progress",
+                "publish_final_grade",
+                "prerequisite_module_ids",
+                "state",
+                "completed_at",
+                "items_count",
+                "items_url",
+                "items",
+                "course_id",
+            ]
+
+            # make student data into dictionary
+            student_rows_dict = [
+                create_dict_from_object(m, attrs) for m in student_data
+            ]
+
+            # make dictionary into df
+            student_rows = pd.DataFrame(student_rows_dict)
+
             student_rows["student_id"] = str(sid)
             student_rows["student_name"] = row["name"]
             student_rows["sortable_student_name"] = row["sortable_name"]
@@ -267,10 +290,7 @@ def write_data_directory(dataframes, cid):
 
     course_path = _make_output_dir(cid)
     for name, dataframe in dataframes.items():
-        dataframe.to_csv("{}/{}.csv".format(course_path, name))
-
-    # dataframes['student_items_df'].to_csv(
-    #     '{}/{}.csv'.format(tableau_path, cid))
+        dataframe.to_csv("{}/{}.csv".format(course_path, name), index=False)
 
 
 def clear_data_directory():
@@ -298,7 +318,7 @@ def write_tableau_directory(list_of_dfs):
     """
     tableau_path = _make_output_dir("Tableau")
     union = pd.concat(list_of_dfs, axis=0, ignore_index=True)
-    union.to_csv("{}/{}.csv".format(tableau_path, "module_data"))
+    union.to_csv(f"{tableau_path}/module_data.csv", index=False)
 
     root = os.path.dirname(os.path.abspath(__file__))[:-4]
 
@@ -331,8 +351,8 @@ def _output_status_table(tableau_path):
     dataframe = pd.DataFrame(data, columns=cols)
 
     file_name = str(current_dt.strftime("%Y-%m-%d %H:%M:%S")) + ".csv"
-    dataframe.to_csv(f"{settings.ROOT_DIR}/status_log/{file_name}")
-    dataframe.to_csv(tableau_path + "/status.csv")
+    dataframe.to_csv(f"{settings.ROOT_DIR}/status_log/{file_name}", index=False)
+    dataframe.to_csv(tableau_path + "/status.csv", index=False)
 
 
 def log_failure(cid, msg):
@@ -377,7 +397,20 @@ def _get_students(course):
     students = course.get_users(
         include=["test_student", "email"], enrollment_type=["student"], per_page=50
     )
-    students_df = _make_dataframe(students)
+    attrs = [
+        "id",
+        "name",
+        "created_at",
+        "sortable_name",
+        "short_name",
+        "sis_user_id",
+        "integration_id",
+        "login_id",
+        "pronouns",
+    ]
+
+    students_data = [create_dict_from_object(s, attrs) for s in students]
+    students_df = pd.DataFrame(students_data)
     return students_df
 
 
@@ -398,22 +431,22 @@ def _make_output_dir(name):
     return directory_path
 
 
-def _make_dataframe(paginated_list):
-    """Convert data of type PaginatedList to a Pandas DataFrame
+# def _make_dataframe(paginated_list):
+#     """Convert data of type PaginatedList to a Pandas DataFrame
 
-    Args:
-        paginated_list (PaginatedList): PaginatedList object
-                       (res from canvasapi wrapper)
-    Returns:
-        DataFrame: Pandas DataFrame table containing info from paginated_list
-                   Constructed from objects attributes - The JSON object used
-                   to build the PaginatedList element
-    """
-    json_list = []
-    for element in paginated_list:
-        json_list.append(element.attributes)
-    dataframe = pd.DataFrame(json_list)
-    return dataframe
+#     Args:
+#         paginated_list (PaginatedList): PaginatedList object
+#                        (res from canvasapi wrapper)
+#     Returns:
+#         DataFrame: Pandas DataFrame table containing info from paginated_list
+#                    Constructed from objects attributes - The JSON object used
+#                    to build the PaginatedList element
+#     """
+#     json_list = []
+#     for element in paginated_list:
+#         json_list.append(element.attributes)
+#     dataframe = pd.DataFrame(json_list)
+#     return dataframe
 
 
 def _dict_to_cols(dataframe, col_to_expand, expand_name):
