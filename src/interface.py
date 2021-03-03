@@ -42,88 +42,92 @@ def get_user_settings():
         Unauthorized: if a user does not have permission to access data for a specified course
 
     """
-    print('\n')
-    base_url = 'https://canvas.ubc.ca'
+    print("\n")
+    base_url = "https://canvas.ubc.ca"
 
     token = __load_token(base_url)
 
     canvas = Canvas(base_url, token)
-    auth_header = {'Authorization': 'Bearer ' + token}
+    auth_header = {"Authorization": "Bearer " + token}
     course_ids = __load_ids()
     courses = []
     valid_cids = []
     for cid in course_ids:
 
         settings.status[str(cid)] = {
-            'cname': None,
-            'status': 'Not executed',
-            'message': 'Has not been run yet'
+            "cname": None,
+            "status": "Not executed",
+            "message": "Has not been run yet",
         }
         try:
             course = canvas.get_course(cid)
         except InvalidAccessToken:
             __shut_down(
-                'Invalid Access Token: Please check that the token provided is correct and still active')
+                "Invalid Access Token: Please check that the token provided is correct and still active"
+            )
         except Unauthorized:
-            log_failure(cid, 'User not authorized to get course data')
+            log_failure(cid, "User not authorized to get course data")
         except TypeError:
             log_failure(cid, 'Invalid type on course id: "' + str(cid) + '"')
         except ResourceDoesNotExist:
-            log_failure(
-                cid, 'Not Found Error: Please ensure correct course id')
+            log_failure(cid, "Not Found Error: Please ensure correct course id")
         else:
             courses.append(course)
             valid_cids.append(cid)
 
     if not courses:
         __shut_down(
-            'Error: courses.csv must contain at least one valid course code')
+            "Error: course_entitlements.csv must contain at least one valid course code"
+        )
 
     course_names = __make_selected_courses_string(courses)
     # if not admin:
-    options = ['Yes, run for all courses', 'Nevermind, end process']
-    title = 'You have chosen to get Module Process: \n\n For: {} \n\n From: {}'.format(
-        course_names, base_url)
-    continue_confirm = (pick(options, title))
+    options = ["Yes, run for all courses", "Nevermind, end process"]
+    title = "You have chosen to get Module Process: \n\n For: {} \n\n From: {}".format(
+        course_names, base_url
+    )
+    continue_confirm = pick(options, title)
 
     if continue_confirm[1] == 0:
-        print('Getting Module Progress: \n For: {} \n From: {}'.format(
-            course_names, base_url))
-        print('------------------------------\n')
+        print(
+            "Getting Module Progress: \n For: {} \n From: {}".format(
+                course_names, base_url
+            )
+        )
+        print("------------------------------\n")
         print("Starting...")
         print("Getting module dataframe")
 
         return {
-            'canvas': canvas,
-            'base_url': base_url,
-            'token': token,
-            'header': auth_header,
-            'course_ids': valid_cids
+            "canvas": canvas,
+            "base_url": base_url,
+            "token": token,
+            "header": auth_header,
+            "course_ids": valid_cids,
         }
 
-    print('Exiting user setup...')
+    print("Exiting user setup...")
     sys.exit()
 
 
 def render_status_table():
-    '''Prints status items to terminal in tabular format
+    """Prints status items to terminal in tabular format
 
     PrettyTable Documentation: https://github.com/jazzband/prettytable
-    '''
+    """
     table = PrettyTable()
     R = "\033[0;31;40m"  # RED
     G = "\033[0;32;40m"  # GREEN
     N = "\033[0m"  # Reset
 
-    table.field_names = ['Course Id', 'Course Name', 'Status', 'Message']
+    table.field_names = ["Course Id", "Course Name", "Status", "Message"]
     for cid, info in settings.status.items():
         col = None
-        if info['status'] == 'Success':
+        if info["status"] == "Success":
             col = G
         else:
             col = R
-        table.add_row(
-            [cid, info['cname'], col+info['status']+N, info['message']])
+        table.add_row([cid, info["cname"], col + info["status"] + N, info["message"]])
 
     print(table)
 
@@ -133,12 +137,16 @@ def __load_token(url):
         token = __read_token(url)
     except InvalidAccessToken:
         __shut_down(
-            'Ivalid Access Token: No value set for token in .env file. Please provide a valid token')
+            "Ivalid Access Token: No value set for token in .env file. Please provide a valid token"
+        )
     except RuntimeError:
-        print('Runtime Error: Could not load token!')
-        print('Ensure .env file is in root directory with token filled in for variable corresponding to given instance')
+        print("Runtime Error: Could not load token!")
+        print(
+            "Ensure .env file is in root directory with token filled in for variable corresponding to given instance"
+        )
         __shut_down(
-            'Possible variable keys are: CANVAS_API_TOKEN, CANVAS_API_TOKEN_TEST, CANVAS_API_TOKEN_SANDBOX')
+            "Possible variable keys are: CANVAS_API_TOKEN, CANVAS_API_TOKEN_TEST, CANVAS_API_TOKEN_SANDBOX"
+        )
 
     return token
 
@@ -158,19 +166,21 @@ def __load_ids():
     cids = []
 
     try:
-        dataframe = pd.read_csv(f'{settings.ROOT_DIR}/course_entitlements.csv')
+        dataframe = pd.read_csv(f"{settings.ROOT_DIR}/course_entitlements.csv")
         for index, row in dataframe.iterrows():
-            course_id = row['course_id']
+            course_id = row["course_id"]
 
             if course_id not in cids:
                 cids.append(course_id)
         return cids
     except FileNotFoundError:
         __shut_down(
-            'File Not Found: There must be a file named course_entitlements.csv in ROOT directory.')
+            "File Not Found: There must be a file named course_entitlements.csv in ROOT directory."
+        )
     except KeyError:
         __shut_down(
-            'Key Error: Please ensure there is a column titled "course_id" present in course_entitlements.csv')
+            'Key Error: Please ensure there is a column titled "course_id" present in course_entitlements.csv'
+        )
 
 
 def __make_selected_courses_string(courses):
@@ -184,17 +194,17 @@ def __make_selected_courses_string(courses):
     Returns:
         String: comma separated course names
     """
-    indent = '    '
-    selected = '\n' + indent + courses[0].name
+    indent = "    "
+    selected = "\n" + indent + courses[0].name
     courses.pop(0)
     if courses:
         for course in courses:
-            selected += ', ' + '\n' + indent + course.name
+            selected += ", " + "\n" + indent + course.name
     return selected
 
 
 def __read_token(url):
-    """ Gets TOKEN from .env file in root directory
+    """Gets TOKEN from .env file in root directory
 
     Args:
         url (string): user selected BASE_URL (instance of Canvas being used)
@@ -207,10 +217,10 @@ def __read_token(url):
     Returns
         String: the target TOKEN from the .env file
     """
-    dotenv.load_dotenv(dotenv.find_dotenv('.env'))
+    dotenv.load_dotenv(dotenv.find_dotenv(".env"))
 
-    if url == 'https://canvas.ubc.ca':
-        token = os.environ.get('CANVAS_API_TOKEN')
+    if url == "https://canvas.ubc.ca":
+        token = os.environ.get("CANVAS_API_TOKEN")
 
     # if url == 'https://ubc.test.instructure.com':
     #     token = os.environ.get('CANVAS_API_TOKEN_TEST')
@@ -218,8 +228,8 @@ def __read_token(url):
     # if url == 'https://ubcsandbox.instructure.com':
     #     token = os.environ.get('CANVAS_API_TOKEN_SANDBOX')
 
-    if token == '':
-        raise InvalidAccessToken('No token value.')
+    if token == "":
+        raise InvalidAccessToken("No token value.")
 
     if token is None:
         raise RuntimeError
@@ -234,5 +244,5 @@ def __shut_down(msg):
         msg (string): message to print before printing 'Shutting down...' and exiting the script
     """
     print(msg)
-    print('Shutting down...')
+    print("Shutting down...")
     sys.exit()
