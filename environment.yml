@@ -10,5 +10,5 @@ dependencies:
   - tqdm
   - pip
   - pip:
-      - canvasapi==0.15.0
+      - canvasapi>=2.0.0
       - pick
