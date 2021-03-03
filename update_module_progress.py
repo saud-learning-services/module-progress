@@ -15,17 +15,19 @@ from canvasapi.exceptions import Unauthorized
 import pandas as pd
 import src.interface as interface
 import settings
-from src.canvas_helpers import (get_modules,
-                                get_items,
-                                get_student_module_status,
-                                get_student_items_status,
-                                write_data_directory,
-                                clear_data_directory,
-                                write_tableau_directory,
-                                log_success,
-                                log_failure)
+from src.canvas_helpers import (
+    get_modules,
+    get_items,
+    get_student_module_status,
+    get_student_items_status,
+    write_data_directory,
+    clear_data_directory,
+    write_tableau_directory,
+    log_success,
+    log_failure,
+)
 
-pd.set_option('display.max_columns', 500)
+pd.set_option("display.max_columns", 500)
 
 
 def main():
@@ -35,8 +37,8 @@ def main():
 
     # Initialization
     usr_settings = interface.get_user_settings()
-    course_ids = usr_settings['course_ids']
-    canvas = usr_settings['canvas']
+    course_ids = usr_settings["course_ids"]
+    canvas = usr_settings["canvas"]
     tableau_dfs = []
 
     # clear any folders that are currently in there (leave tableau folder)
@@ -51,18 +53,22 @@ def main():
         # Calling helpers to get data from Canvas and build Pandas DataFrame's
 
         try:
-            settings.status[str(cid)]['cname'] = course.name
+            settings.status[str(cid)]["cname"] = course.name
             modules_df = get_modules(course)
             items_df = get_items(modules_df, course.name)
             student_module_status = get_student_module_status(course)
             student_items_status = get_student_items_status(
-                course, student_module_status)
+                course, student_module_status
+            )
         except KeyError as e:
             print(e)
             log_failure(cid, e)
         except Unauthorized:
             log_failure(
-                cid, 'User not authorized to get module progress data for course: ' + str(cid))
+                cid,
+                "User not authorized to get module progress data for course: "
+                + str(cid),
+            )
         except IndexError:
             log_failure(cid, "Course must have students enrolled")
         except Exception as e:
@@ -70,10 +76,10 @@ def main():
         else:
             # Writing dataframes to disk
             dataframes = {
-                'module_df': modules_df,
-                'items_df': items_df,
-                'student_module_df': student_module_status,
-                'student_items_df': student_items_status
+                "module_df": modules_df,
+                "items_df": items_df,
+                "student_module_df": student_module_status,
+                "student_items_df": student_items_status,
             }
             tableau_dfs.append(student_items_status)
             write_data_directory(dataframes, cid)
@@ -83,11 +89,11 @@ def main():
         write_tableau_directory(tableau_dfs)
     except Exception as e:
         print(e)
-        print('Shutting down...')
+        print("Shutting down...")
         sys.exit()
 
     interface.render_status_table()
-    print('\n\033[94m' + '***COMPLETED***' + '\033[91m')
+    print("\n\033[94m" + "***COMPLETED***" + "\033[91m")
 
 
 if __name__ == "__main__":
