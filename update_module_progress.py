@@ -60,9 +60,8 @@ def main():
             student_items_status = get_student_items_status(
                 course, student_module_status
             )
-        except KeyError as e:
-            print(e)
-            log_failure(cid, e)
+        except KeyError as error:
+            log_failure(cid, error)
         except Unauthorized:
             log_failure(
                 cid,

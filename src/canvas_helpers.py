@@ -122,9 +122,7 @@ def get_items(modules_df, cname):
         )
     except KeyError:
         raise KeyError(
-            'Unable to expand module items for "'
-            + cname
-            + '." Please ensure all modules have items'
+            f'Unable to expand module items for "{cname}." Please ensure all modules have items'
         )
     else:
         return items_df
