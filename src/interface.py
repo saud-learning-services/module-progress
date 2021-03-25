@@ -13,6 +13,7 @@ from canvasapi import Canvas
 from canvasapi.exceptions import InvalidAccessToken, ResourceDoesNotExist, Unauthorized
 from pick import pick
 from prettytable import PrettyTable
+from pathlib import Path
 
 import settings
 from .canvas_helpers import log_failure
@@ -166,7 +167,8 @@ def __load_ids():
     cids = []
 
     try:
-        dataframe = pd.read_csv(f"{settings.ROOT_DIR}/course_entitlements.csv")
+        entitlements_path = Path(f"{settings.ROOT_DIR}/course_entitlements.csv")
+        dataframe = pd.read_csv(entitlements_path)
         for index, row in dataframe.iterrows():
             course_id = row["course_id"]
 
