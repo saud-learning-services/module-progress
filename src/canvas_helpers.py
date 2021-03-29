@@ -351,7 +351,7 @@ def _output_status_table(tableau_path):
 
     dataframe = pd.DataFrame(data, columns=cols)
 
-    file_name = str(current_dt.strftime("%Y-%m-%d %H:%M:%S")) + ".csv"
+    file_name = str(current_dt.strftime("%Y-%m-%d %H.%M.%S")) + ".csv"
 
     status_log_path = Path(f"{settings.ROOT_DIR}/status_log/{file_name}")
     dataframe.to_csv(status_log_path, index=False)
