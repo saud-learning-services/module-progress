@@ -219,7 +219,11 @@ def get_student_items_status(course, module_status):
                    Items list exapanded -> single row per item
                    Items dict. expanded -> single col per attribute
     """
-    expanded_items = _list_to_df(module_status, "items")
+    try:
+        expanded_items = _list_to_df(module_status, "items")
+    except KeyError as e:
+        raise KeyError("Corse has no items completd by students")
+
     expanded_items = _dict_to_cols(expanded_items, "items", "items_")
     student_items_status = _dict_to_cols(
         expanded_items, "items_completion_requirement", "item_cp_req_"
