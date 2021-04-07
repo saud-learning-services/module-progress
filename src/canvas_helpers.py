@@ -16,6 +16,7 @@ import shutil
 from tqdm import tqdm
 import pandas as pd
 import settings
+from pathlib import Path
 
 
 def create_dict_from_object(theobj, list_of_attributes):
@@ -122,9 +123,7 @@ def get_items(modules_df, cname):
         )
     except KeyError:
         raise KeyError(
-            'Unable to expand module items for "'
-            + cname
-            + '." Please ensure all modules have items'
+            f'Unable to expand module items for "{cname}." Please ensure all modules have items'
         )
     else:
         return items_df
@@ -290,7 +289,8 @@ def write_data_directory(dataframes, cid):
 
     course_path = _make_output_dir(cid)
     for name, dataframe in dataframes.items():
-        dataframe.to_csv("{}/{}.csv".format(course_path, name), index=False)
+        path = Path(f"{course_path}/{name}.csv")
+        dataframe.to_csv(path, index=False)
 
 
 def clear_data_directory():
@@ -300,10 +300,10 @@ def clear_data_directory():
     """
 
     root = os.path.dirname(os.path.abspath(__file__))[:-4]
-    data_path = root + "/data"
+    data_path = Path(f"{root}/data")
 
     for subdir in os.listdir(data_path):
-        path = data_path + "/" + subdir
+        path = data_path / subdir
         if subdir != "Tableau" and subdir != ".gitkeep" and subdir != ".DS_Store":
             shutil.rmtree(path, ignore_errors=False, onerror=None)
 
@@ -318,19 +318,20 @@ def write_tableau_directory(list_of_dfs):
     """
     tableau_path = _make_output_dir("Tableau")
     union = pd.concat(list_of_dfs, axis=0, ignore_index=True)
-    union.to_csv(f"{tableau_path}/module_data.csv", index=False)
+    module_data_output_path = tableau_path / "module_data.csv"
+    union.to_csv(module_data_output_path, index=False)
 
     root = os.path.dirname(os.path.abspath(__file__))[:-4]
 
     # Copy the course_entitlements.csv into the Tableau folder
-    src = root + "/course_entitlements.csv"
-    dst = root + "/data/Tableau/course_entitlements.csv"
+    src = Path(f"{root}/course_entitlements.csv")
+    dst = Path(f"{root}/data/Tableau/course_entitlements.csv")
     shutil.copyfile(src, dst)
 
     current_dt = datetime.datetime.now()
-    dir_name = str(current_dt.strftime("%Y-%m-%d %H:%M:%S"))
+    dir_name = str(current_dt.strftime("%Y-%m-%d %H-%M-%S"))
     src = tableau_path
-    dst = root + "/archive/" + dir_name
+    dst = Path(f"{root}/archive/{dir_name}")
     shutil.make_archive(dst, "zip", src)
     _output_status_table(tableau_path)
 
@@ -350,9 +351,13 @@ def _output_status_table(tableau_path):
 
     dataframe = pd.DataFrame(data, columns=cols)
 
-    file_name = str(current_dt.strftime("%Y-%m-%d %H:%M:%S")) + ".csv"
-    dataframe.to_csv(f"{settings.ROOT_DIR}/status_log/{file_name}", index=False)
-    dataframe.to_csv(tableau_path + "/status.csv", index=False)
+    file_name = str(current_dt.strftime("%Y-%m-%d %H-%M-%S")) + ".csv"
+
+    status_log_path = Path(f"{settings.ROOT_DIR}/status_log/{file_name}")
+    dataframe.to_csv(status_log_path, index=False)
+
+    status_path = tableau_path / "status.csv"
+    dataframe.to_csv(status_path, index=False)
 
 
 def log_failure(cid, msg):
@@ -424,7 +429,7 @@ def _make_output_dir(name):
         String: path to the newly created directory
     """
     root = os.path.dirname(os.path.abspath(__file__))[:-4]
-    directory_path = root + "/data/{}".format(name)
+    directory_path = Path(f"{root}/data/{name}")
     # print(directory_path)
     if not os.path.exists(directory_path):
         os.makedirs(directory_path)
