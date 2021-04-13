@@ -15,6 +15,10 @@ from pick import pick
 from prettytable import PrettyTable
 from pathlib import Path
 
+from colorama import init
+
+init()
+
 import settings
 from .canvas_helpers import log_failure
 

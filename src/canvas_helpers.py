@@ -333,7 +333,7 @@ def write_tableau_directory(list_of_dfs):
     shutil.copyfile(src, dst)
 
     current_dt = datetime.datetime.now()
-    dir_name = str(current_dt.strftime("%Y-%m-%d %H-%M-%S"))
+    dir_name = str(current_dt.strftime("%Y-%m-%d--%H-%M-%S"))
     src = tableau_path
     dst = Path(f"{root}/archive/{dir_name}")
     shutil.make_archive(dst, "zip", src)
@@ -355,7 +355,7 @@ def _output_status_table(tableau_path):
 
     dataframe = pd.DataFrame(data, columns=cols)
 
-    file_name = str(current_dt.strftime("%Y-%m-%d %H-%M-%S")) + ".csv"
+    file_name = str(current_dt.strftime("%Y-%m-%d--%H-%M-%S")) + ".csv"
 
     status_log_path = Path(f"{settings.ROOT_DIR}/status_log/{file_name}")
     dataframe.to_csv(status_log_path, index=False)
