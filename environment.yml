@@ -5,6 +5,7 @@ channels:
 dependencies:
   - python-dotenv
   - prettytable
+  - colorama
   - pandas
   - python
   - tqdm
