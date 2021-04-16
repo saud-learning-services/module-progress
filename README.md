@@ -2,7 +2,9 @@
 
 Module Progress is a Python script and Tableau workbook for visualizing students progress in a Canvas course. The script component gathers, cleans and exports data from the [Canvas LMS REST API](https://canvas.instructure.com/doc/api/index.html). This data can then be imported into Tableau and explored using a collection of interactive dashboards.
 
-> Demo Dashboard [link](https://public.tableau.com/profile/marko1654#!/vizhome/ModuleProgress/StartHereOverallStatus)
+This tool is meant to enhance the data available from Canvas's [module progress data](https://community.canvaslms.com/t5/Instructor-Guide/How-do-I-use-modules-to-view-the-progress-of-students-in-a/ta-p/973) but where you can only see one student at a time.: 
+
+> You can take a look at our [Demo Dashboard](https://public.tableau.com/profile/marko1654#!/vizhome/ModuleProgress/StartHereOverallStatus)
 
 ## Environment Setup
 
