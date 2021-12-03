@@ -1,0 +1,32 @@
+{
+  "courses": [
+    {
+      "id": "12345",
+      "course_name": "Course A",
+      "users": [
+        {
+          "id": "cwl_anon1",
+          "name": "Person1"
+        },
+        {
+          "id": "cwl_anon2",
+          "name": "Person2"
+        },
+        {
+          "id": "cwl_anon3",
+          "name": "Person3"
+        }
+      ]
+    },
+    {
+      "id": "77777",
+      "course_name": "Course B",
+      "users": [
+        {
+          "id": "cwl_anon1",
+          "name": "Person 1"
+        }
+      ]
+    }
+  ]
+}

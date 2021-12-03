@@ -1,0 +1,29 @@
+{
+  "name": "module-progress",
+  "version": "1.0.0",
+  "description": "Module Progress is a Python script and Tableau workbook for visualizing students progress in a Canvas course. The script component gathers, cleans and exports data from the [Canvas LMS REST API](https://canvas.instructure.com/doc/api/index.html). This data can then be imported into Tableau and explored using a collection of interactive dashboards.",
+  "main": "index.js",
+  "scripts": {
+    "server": "json-server --watch permissions.json --port=5000 --middlewares ./range.js",
+    "client": "npm start --prefix client",
+    "admin": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saud-learning-services/module-progress.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saud-learning-services/module-progress/issues"
+  },
+  "homepage": "https://github.com/saud-learning-services/module-progress#readme",
+  "dependencies": {
+    "@material-ui/core": "^4.12.3",
+    "concurrently": "^6.3.0",
+    "json-server": "^0.17.0",
+    "ra-data-simple-rest": "^3.19.0",
+    "react-admin": "^3.19.0"
+  }
+}
