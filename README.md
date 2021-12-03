@@ -1,3 +1,10 @@
+> FOR PROTOTYPE
+> * `cd client && npm install`
+> * `cd ..`
+> * `npm install` (in root folder)
+> * `npm run admin`
+
+
 # Module Progress
 
 Module Progress is a Python script and Tableau workbook for visualizing students progress in a Canvas course. The script component gathers, cleans and exports data from the [Canvas LMS REST API](https://canvas.instructure.com/doc/api/index.html). This data can then be imported into Tableau and explored using a collection of interactive dashboards.
