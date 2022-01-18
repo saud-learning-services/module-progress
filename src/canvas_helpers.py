@@ -6,7 +6,7 @@ All Canvas LMS REST API calls made using canvasapi python API wrapper:
 https://github.com/ucfopen/canvasapi
 ***
 
-@authors: Marko Prodanovic, Alison Myers, Jeremy Hidjaja 
+@authors: Marko Prodanovic, Alison Myers, Jeremy Hidjaja
 """
 from ast import literal_eval
 import datetime
@@ -151,6 +151,7 @@ def get_student_module_status(course):
     """
 
     students_df = _get_students(course)
+    enrollments_df = _get_enrollments(course)
 
     print("Getting student module info for " + course.name)
     student_module_status = pd.DataFrame()
@@ -188,6 +189,7 @@ def get_student_module_status(course):
             student_rows = pd.DataFrame(student_rows_dict)
 
             student_rows["student_id"] = str(sid)
+            student_rows["sis_user_id"] = row["sis_user_id"]
             student_rows["student_name"] = row["name"]
             student_rows["sortable_student_name"] = row["sortable_name"]
             student_module_status = student_module_status.append(
@@ -203,7 +205,8 @@ def get_student_module_status(course):
             "position": "module_position",
         }
     )
-    return student_module_status
+    student_module_status_with_enrollment_date = student_module_status.merge(enrollments_df, how='left', left_on='student_id', right_on='user_id')
+    return student_module_status_with_enrollment_date
 
 
 def get_student_items_status(course, module_status):
@@ -421,6 +424,35 @@ def _get_students(course):
     students_data = [create_dict_from_object(s, attrs) for s in students]
     students_df = pd.DataFrame(students_data)
     return students_df
+
+
+def _get_enrollments(course):
+    """Returns all enrollments from specified course
+
+    Makes a request to Canvas LMS REST API through Canvas Python API Wrapper
+    Calls make_dataframe to convert response to Pandas DataFrame. Returns
+    DataFrame.
+
+    Args:
+        course (canvasapi.course.Course): The course obj.
+               from Canvas Python API wrapper
+
+    Returns:
+        DataFrame: Students table
+    """
+    # print("Getting course enrollments")
+    enrollments = course.get_enrollments(
+       enrollment_type=["student"], per_page=50
+    )
+    attrs = [
+        "created_at",
+        "user_id"
+    ]
+
+    enrollment_data = [create_dict_from_object(e, attrs) for e in enrollments]
+    enrollments_df = pd.DataFrame(enrollment_data)
+    enrollments_df['user_id'] = enrollments_df['user_id'].astype(str)
+    return enrollments_df
 
 
 def _make_output_dir(name):
