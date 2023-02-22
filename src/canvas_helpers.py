@@ -98,7 +98,7 @@ def get_items(modules_df, cname):
     """Returns expanded modules data
 
     Given a modules dataframe, expand table data so that fields with a list get
-    broken up into indiviaul rows per list item & dictionaries are broken up
+    broken up into individual rows per list item & dictionaries are broken up
     into separate columns.
 
     Args:
