@@ -239,10 +239,15 @@ def get_student_items_status(course, module_status):
     items_status_list = student_items_status["completed_at"].values.tolist()
     # clean/format the datetime string (to be more interpretable in Tableau)
     cleaned = map(__clean_datetime_value, items_status_list)
-    print(cleaned)
+
     
     # put cleaned values back into dataframe
     student_items_status["completed_at"] = list(cleaned)
+
+    dates = student_items_status["completed_at"].unique()
+    
+    print("Max Date:")
+    print(max([datetime.datetime.strptime(i, '%Y-%m-%d %H:%M:%S') for i in dates if i!=None]).strftime("%Y-%m-%d %H:%M:%S"))
     
     student_items_status = student_items_status[
         [
