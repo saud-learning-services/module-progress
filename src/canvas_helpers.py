@@ -58,6 +58,8 @@ def get_modules(course):
         KeyError: if request through canvasapi is unsuccessful or if dataframe creation and
                   handling results in errors
     """
+
+    print("Getting Module Information ...")
     try:
         modules = course.get_modules(include=["items"], per_page=50)
         attrs = [
@@ -96,7 +98,7 @@ def get_items(modules_df, cname):
     """Returns expanded modules data
 
     Given a modules dataframe, expand table data so that fields with a list get
-    broken up into indiviaul rows per list item & dictionaries are broken up
+    broken up into individual rows per list item & dictionaries are broken up
     into separate columns.
 
     Args:
@@ -109,6 +111,7 @@ def get_items(modules_df, cname):
     Raises:
         KeyError: if there is any issue expanding modules table or if module does not have items
     """
+    print("Getting item information ...")
     try:
         expanded_items = _list_to_df(
             modules_df[["module_id", "module_name", "course_id", "items"]], "items"
@@ -149,7 +152,7 @@ def get_student_module_status(course):
                    row 2: student1, module0
                    row 3: student1, module1
     """
-
+    print("Getting Module Status for students ...")
     students_df = _get_students(course)
     enrollments_df = _get_enrollments(course)
 
@@ -192,11 +195,9 @@ def get_student_module_status(course):
             student_rows["sis_user_id"] = row["sis_user_id"]
             student_rows["student_name"] = row["name"]
             student_rows["sortable_student_name"] = row["sortable_name"]
-            student_module_status = student_module_status.append(
-                student_rows, ignore_index=True, sort=False
-            )
-            # note, kept getting sort error future warning
-            # might want to check this in future that Sort should be false
+            student_module_status = pd.concat([
+                student_module_status,
+                student_rows], ignore_index=True, sort=False)
 
     student_module_status = student_module_status.rename(
         columns={
@@ -225,7 +226,7 @@ def get_student_items_status(course, module_status):
     try:
         expanded_items = _list_to_df(module_status, "items")
     except KeyError as e:
-        raise KeyError("Corse has no items completd by students")
+        raise KeyError("Course has no items completed by students")
 
     expanded_items = _dict_to_cols(expanded_items, "items", "items_")
     student_items_status = _dict_to_cols(
@@ -238,8 +239,16 @@ def get_student_items_status(course, module_status):
     items_status_list = student_items_status["completed_at"].values.tolist()
     # clean/format the datetime string (to be more interpretable in Tableau)
     cleaned = map(__clean_datetime_value, items_status_list)
+
+    
     # put cleaned values back into dataframe
     student_items_status["completed_at"] = list(cleaned)
+
+    dates = student_items_status["completed_at"].unique()
+    
+    print("Max Date:")
+    print(max([datetime.datetime.strptime(i, '%Y-%m-%d %H:%M:%S') for i in dates if i!=None]).strftime("%Y-%m-%d %H:%M:%S"))
+    
     student_items_status = student_items_status[
         [
             "completed_at",
@@ -263,6 +272,7 @@ def get_student_items_status(course, module_status):
             "course_name",
         ]
     ]
+
     return student_items_status
 
 
@@ -514,7 +524,7 @@ def _dict_to_cols(dataframe, col_to_expand, expand_name):
     """
     dataframe[col_to_expand] = dataframe[col_to_expand].apply(_all_dict_to_str)
     original_df = dataframe.drop([col_to_expand], axis=1)
-    extended_df = dataframe[col_to_expand].apply(pd.Series)
+    extended_df = dataframe[col_to_expand].apply(pd.Series, dtype='object')
     extended_df.columns = [
         i
         if bool(re.search(expand_name, i))
