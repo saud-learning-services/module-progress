@@ -51,6 +51,7 @@ Read more about Tableau user filters [here](https://help.tableau.com/current/pro
 - The directory: `data/Tableau` will contain all the necessary files for linking to Tableau including:
   - module_data.csv: A table containing a union of data for all successfully queried courses
   - status.csv: A table that reflect the status of the most recent run. For each course shows the state of the query (Success or Failed), date and time of last run and any error/success messages.
+- Note: the script will delete any existing course folders and only archives the "tableau" data. Please be aware of this before running.
 
 ## Connecting to Tableau
 
