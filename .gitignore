@@ -20,3 +20,6 @@ TODO.md
 __pycache__
 
 UPDATED_ON.txt
+.DS_Store
+*.csv
+!SAMPLE_course_entitlements.csv

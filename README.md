@@ -22,7 +22,7 @@ This tool is meant to enhance the data available from Canvas's [module progress 
 
 ## Specifying Courses and User Filters
 
-The script will need to know which courses to query. In the file titled `course_entitlements.csv`, ensure there is a `course_id` column and list all target course id's in that column _(Note you'll need to have the proper Canvas privledges to get the data)_.
+The script will need to know which courses to query. Rename the file `SAMPLE_course_entitlements.csv`, to `course_entitlements.csv` ensure there is a `course_id` column and list all target course id's in that column _(Note you'll need to have the proper Canvas privledges to get the data)_.
 
 You can add a optional `user_id` column as well if working with Tableau Server. Here, you can list Tableau Server user id's to make certain course data be visible to certain users.
 
