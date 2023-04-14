@@ -1,13 +1,10 @@
 import logging
 import sys
 import os
-
 from canvasapi import Canvas
-
 from dotenv import load_dotenv
 
 load_dotenv() 
-
 
 # logging
 logger = logging.getLogger("canvasapi")
