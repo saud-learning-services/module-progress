@@ -234,6 +234,7 @@ def get_student_items_status(course, module_status):
     ).reset_index(drop=True)
     student_items_status["course_id"] = course.id
     student_items_status["course_name"] = course.name
+    student_items_status["course_start_date"] = course.start_at
 
     # pull out completed_at column as list
     items_status_list = student_items_status["completed_at"].values.tolist()
@@ -270,6 +271,7 @@ def get_student_items_status(course, module_status):
             "item_cp_req_type",
             "item_cp_req_completed",
             "course_name",
+            "course_start_date",
         ]
     ]
 
