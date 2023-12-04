@@ -102,5 +102,5 @@ When the data sources has been connected. The _Overall Status_ dashboard provide
 ## Authors and Contributers
 - [Marko Prodanovic](https://github.com/markoprodanovic)
 - [Jeremy H](https://github.com/JeremyH011)
-- [Ranjit Sundaramurthi](https://github.com/ranjitprakash1986/module-progress-dashboard) for his work developing a web version of the dsahboard
+- [Ranjit Sundaramurthi](https://github.com/ranjitprakash1986/module-progress-dashboard) for his work developing a web version of the dashboard
 
