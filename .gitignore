@@ -24,3 +24,4 @@ UPDATED_ON.txt
 *.csv
 !SAMPLE_course_entitlements.csv
 !SAMPLE_Tableau_Data/*
+*.ipynb
