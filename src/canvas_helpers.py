@@ -125,9 +125,11 @@ def get_items(modules_df, cname):
             "items_completion_req_",
         )
     except KeyError:
-        raise KeyError(
-            f'Unable to expand module items for "{cname}." Please ensure all modules have items'
-        )
+        print('No items to expand ... skipping row ...')
+        return None
+        # raise KeyError(
+        #     f'Unable to expand module items for "{cname}." Please ensure all modules have items'
+        # )
     else:
         return items_df
 
