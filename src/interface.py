@@ -142,7 +142,7 @@ def __load_token(url):
         token = __read_token(url)
     except InvalidAccessToken:
         __shut_down(
-            "Ivalid Access Token: No value set for token in .env file. Please provide a valid token"
+            "Invalid Access Token: No value set for token in .env file. Please provide a valid token"
         )
     except RuntimeError:
         print("Runtime Error: Could not load token!")
